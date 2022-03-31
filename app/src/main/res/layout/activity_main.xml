@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+        <Button
+            android:id="@+id/bDisplay"
+            style="@style/style_1"
+            android:text="Display All"/>
+
+        <Button
+            android:id="@+id/bDisplayName"
+            style="@style/style_1"
+            android:text="Display Name"/>
+
+        <Button
+            android:id="@+id/bDisplayAge"
+            style="@style/style_1"
+            android:text="Display > 20 "/>
+
+        <EditText
+            android:id="@+id/eName"
+            style="@style/style_1"
+            android:text="Artur"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:background="@color/teal_200" />
+
+    </LinearLayout>
+</layout>

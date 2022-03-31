@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">DB_Kotlin</string>
+
+    <string-array name="init_db_content">
+        <item>Artur:47</item>
+        <item>Zosia:45</item>
+        <item>Jerzyk:46</item>
+        <item>Artur:16</item>
+    </string-array>
+</resources>

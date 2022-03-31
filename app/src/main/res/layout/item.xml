@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/nameItem"
+        style="@style/style_1"
+        android:layout_weight="1"
+        android:background="#00BCD4"/>
+
+    <TextView
+        android:id="@+id/ageItem"
+        style="@style/style_1"
+        android:layout_weight="2"
+        android:background="#9BE992"/>
+
+</LinearLayout>
