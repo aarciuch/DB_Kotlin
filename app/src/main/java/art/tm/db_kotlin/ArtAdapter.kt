@@ -28,7 +28,7 @@ class ArtAdapter(var lista: List<Person>) : RecyclerView.Adapter<ArtAdapter.ArtV
         return lista.size
     }
 
-    class ArtViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ArtViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var name: TextView = view.findViewById(R.id.nameItem)
         var age: TextView = view.findViewById(R.id.ageItem)
     }

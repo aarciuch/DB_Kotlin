@@ -1,11 +1,14 @@
 package art.tm.db_kotlin
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
 import art.tm.db_kotlin.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
+import java.io.BufferedWriter
+import java.nio.charset.Charset
 
 
 @InternalCoroutinesApi
@@ -18,6 +21,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recyclerViewAdapter: ArtAdapter
 
     private lateinit var dao: PersonDao
+
+    private var nazwa : String = "plik.txt"
+    private var dane : String = "Ala:Ola:Zosia:"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,8 +103,37 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+
+        binding.oprecjaButton.setOnClickListener {
+            if (binding.operacja.isChecked) {
+                val dane1 = odczytZPliku(nazwa)
+                Log.i("DANE", dane1)
+            } else {
+                Log.i("DANE", dane)
+                zapisDoPliku(nazwa, dane)
+            }
+        }
     }
 
+    private fun odczytZPliku(nazwa: String) : String{
+        try {
+            applicationContext.openFileInput(nazwa).use {
+                return it.bufferedReader(Charset.defaultCharset()).readLine()
+            }
+        } catch (e: Exception) {
+
+        }
+    }
+
+    private fun zapisDoPliku(nazwa: String, dane: String) {
+       try {
+           applicationContext.openFileOutput(nazwa, Context.MODE_PRIVATE).use {
+               it.bufferedWriter(Charset.defaultCharset()).write(dane.toString())
+           }
+       } catch(e: Exception) {
+
+       }
+    }
 
 
     private fun getIniDbtContent(id: Int): Array<String> {

@@ -23,7 +23,7 @@ abstract class PersonDB : RoomDatabase() {
                         contex.applicationContext,
                         PersonDB::class.java,
                         "personDB")
-                        .fallbackToDestructiveMigration()
+                      //  .fallbackToDestructiveMigration()
                       //  .allowMainThreadQueries()
                         .build()
                 }

@@ -13,6 +13,29 @@
         android:orientation="vertical"
         tools:context=".MainActivity">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="#f0f0f0">
+            <CheckBox
+                android:id="@+id/operacja"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="odczyt"
+                android:textAlignment="center"
+                android:layout_weight="1"
+                android:checked="true"/>
+            <Button
+                android:id="@+id/oprecjaButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="4dp"
+                android:text="DO"/>
+
+        </LinearLayout>
+
         <Button
             android:id="@+id/bDisplay"
             style="@style/style_1"
