@@ -7,8 +7,12 @@ import android.util.Log
 import androidx.databinding.DataBindingUtil
 import art.tm.db_kotlin.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
+import java.io.BufferedReader
 import java.io.BufferedWriter
+import java.io.File
+import java.io.IOException
 import java.nio.charset.Charset
+import java.util.Scanner
 
 
 @InternalCoroutinesApi
@@ -23,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var dao: PersonDao
 
     private var nazwa : String = "plik.txt"
-    private var dane : String = "Ala:Ola:Zosia:"
+    private var dane : ArrayList<String> = arrayListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +37,11 @@ class MainActivity : AppCompatActivity() {
         base = PersonDB.getPersonDB(application.applicationContext)!!
 
         dao = base.personDao()
+
+        dane.add("Ula")
+        dane.add("Ola")
+        dane.add("Ela")
+        dane.add("Ala")
 
         GlobalScope.launch (Dispatchers.IO) {
             if (dao.getSize() == 0) {
@@ -106,33 +115,65 @@ class MainActivity : AppCompatActivity() {
 
         binding.oprecjaButton.setOnClickListener {
             if (binding.operacja.isChecked) {
-                val dane1 = odczytZPliku(nazwa)
-                Log.i("DANE", dane1)
+                val dane1 = odczytZPliku(nazwa, 0)
+                Log.i("DANE", "dane tryb 0: ${dane1}")
+                val dane2 = odczytZPliku(nazwa, 1)
+                Log.i("DANE", "dane tryb 1: ${dane2}")
             } else {
-                Log.i("DANE", dane)
+                Log.i("DANE", "${dane}")
                 zapisDoPliku(nazwa, dane)
             }
         }
     }
 
-    private fun odczytZPliku(nazwa: String) : String{
-        try {
-            applicationContext.openFileInput(nazwa).use {
-                return it.bufferedReader(Charset.defaultCharset()).readLine()
+    private fun odczytZPliku(nazwa: String, tryb: Int): ArrayList<String> = runBlocking {
+        var wynik = arrayListOf<String>()
+        var linia: String
+        if (tryb == 0) {
+            val jobTryb0 = async {
+                try {
+                    applicationContext.openFileInput(nazwa).use {
+                        var bufReader = BufferedReader(it.reader())
+                        do {
+                            linia = bufReader.readLine()
+                            if (linia != null) wynik.add(linia)
+                        } while (linia != null)
+                    }
+                } catch (e: Exception) {
+                    e.message?.let { Log.i("DANE", it) }
+                }
             }
-        } catch (e: Exception) {
-
+            jobTryb0.await()
+            //    Log.i("DANE", "${wynik}")
+        } else if (tryb == 1) {
+            val jobTryb1 = async {
+                try {
+                    val sc = Scanner(openFileInput(nazwa))
+                    while(sc.hasNextLine()) {
+                        wynik.add(sc.nextLine())
+                    }
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+            jobTryb1.await()
         }
+        return@runBlocking wynik
     }
 
-    private fun zapisDoPliku(nazwa: String, dane: String) {
-       try {
-           applicationContext.openFileOutput(nazwa, Context.MODE_PRIVATE).use {
-               it.bufferedWriter(Charset.defaultCharset()).write(dane.toString())
-           }
-       } catch(e: Exception) {
+    private fun zapisDoPliku(nazwa: String, dane: ArrayList<String>) {
+        GlobalScope.launch {
+            try {
+                applicationContext.openFileOutput(nazwa, Context.MODE_PRIVATE).use {
+                    for (item in dane) {
+                        it.write(item.toByteArray(Charset.defaultCharset()))
+                        it.write("\n".toByteArray(Charset.defaultCharset()))
+                    }
+                }
+            } catch (e: Exception) {
 
-       }
+            }
+        }
     }
 
 
